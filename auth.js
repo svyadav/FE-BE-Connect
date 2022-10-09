@@ -24,19 +24,30 @@ const jwtDecode = async (token) => {
 };
 
 let validate = async (req, res, next) => {
-  let token = req.headers.authorization.split(" ")[1];
-  let data = await jwtDecode(token);
-  let currentTime = Math.round(new Date() / 1000);
-  if (currentTime <= data.exp) next();
-  else
+  if(req.headers && req.headers.authorization){
+    let token = req.headers.authorization.split(" ")[1];
+    let data = await jwtDecode(token);
+    let currentTime = Math.round(new Date() / 1000);
+    if (currentTime <= data.exp) next();
+    else
+      res.send({
+        statusCode: 402,
+        message: "Token expired",
+      });
+
+  }
+  else{
     res.send({
-      statusCode: 402,
-      message: "Token expired",
-    });
+      statusCode:401,
+      message:"Invalid Token or No Token"
+    })
+  }
+ 
 };
 
 let roleAdmin = async (req, res, next) => {
-  let token = req.headers.authorization.split(" ")[1];
+  if(req.headers && req.headers.authorization){
+    let token = req.headers.authorization.split(" ")[1];
   let data = await jwtDecode(token);
   if (data.role == "Admin") next();
   else
@@ -44,6 +55,16 @@ let roleAdmin = async (req, res, next) => {
       statusCode: 401,
       message: "Unauthorized:Only Admin can access",
     });
+
+  }
+
+  else{
+    res.send({
+      statusCode:401,
+      message:"Invalid"
+    })
+  }
+  
 };
 
 module.exports = {
