@@ -7,6 +7,7 @@ import env from "../environment"
 
 
 
+
 const Dashboard=()=>{
     const [data,setData]=useState([])
     const navigate=useNavigate()
@@ -35,6 +36,8 @@ const Dashboard=()=>{
     useEffect(()=>{
         loadData()
     },[])
+
+
     return <>
         <div className="login-wrapper">
         <h1>Welcome to Dashboard</h1>
@@ -50,6 +53,7 @@ const Dashboard=()=>{
           <th>Email</th>
           <th>Role</th>
           <th>Created At</th>
+  
         </tr>
       </thead>
       <tbody>
@@ -61,6 +65,7 @@ const Dashboard=()=>{
                 <td>{e.email}</td>
                 <td>{e.role}</td>
                 <td>{e.createdAt}</td>
+               
             </tr>
 
         })}
